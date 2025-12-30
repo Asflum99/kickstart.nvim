@@ -1,7 +1,7 @@
 return {
   {
     'folke/which-key.nvim',
-    event = 'VimEnter',
+    event = 'VeryLazy',
     opts = {
       preset = 'helix',
       delay = 0,
@@ -42,13 +42,16 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>s', group = 'Search' },
+        { '<leader>t', group = 'Toggle' },
+        { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
         { '<leader>c', group = 'Code' },
-        { 'g', group = '[G]oto' },
+        { 'g', group = 'Goto' },
         { '<leader>x', group = 'Diagnostics/Quickfix' },
-        { '<leader>q', group = '[Q]uit / Session' },
+        { '<leader>q', group = 'Quit / Session' },
+        { '<leader>f', group = 'Find' },
+        { '<leader>d', group = 'Debugger' },
+        { '<leader>g', group = 'Git' }
       },
     },
   },

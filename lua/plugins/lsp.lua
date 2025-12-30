@@ -1,6 +1,7 @@
 return {
   {
     'neovim/nvim-lspconfig',
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       { 'mason-org/mason.nvim', opts = {} },
       'mason-org/mason-lspconfig.nvim',
@@ -41,8 +42,6 @@ return {
           --  To jump back, press <C-t>.
           map('gd', require('telescope.builtin').lsp_definitions, 'Goto [D]efinition')
 
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
 
           -- Fuzzy find all the symbols in your current document.
