@@ -30,16 +30,8 @@ return {
         },
       },
     },
-    picker = {
-      sources = {
-        explorer = {
-          layout = { layout = { position = 'right' } },
-        },
-      },
-    },
     notifier = { enabled = true },
     input = { enabled = true },
-    explorer = { enabled = true },
     git = { enabled = true },
     lazygit = { enabled = true, configure = true },
     terminal = { enabled = true },

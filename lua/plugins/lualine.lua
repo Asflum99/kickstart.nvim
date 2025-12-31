@@ -3,7 +3,6 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   event = 'VeryLazy',
   config = function()
-
     require('lualine').setup {
       options = {
         theme = 'tokyonight',
@@ -22,9 +21,13 @@ return {
         lualine_c = {
           {
             'filename',
-            color = function()
-              return { fg = vim.bo.modified and '#e0af68' or nil }
-            end,
+            symbols = {
+              modified = '',
+              readonly = '[-]',
+              unnamed = '[Sin nombre]',
+              newfile = '[Nuevo]',
+            },
+            color = nil,
           },
         },
         lualine_x = { 'encoding', 'fileformat', 'filetype' },

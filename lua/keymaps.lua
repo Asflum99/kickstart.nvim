@@ -27,10 +27,13 @@ map('n', '<leader>ff', function()
   require('telescope.builtin').find_files()
 end, { desc = '[F]ind [F]iles' })
 
--- Abrir el explorador de archivos de Snacks
+-- Abrir el explorador en el directorio del archivo actual
+-- En lua/keymaps.lua
 map('n', '<leader>e', function()
-  require('snacks').explorer()
-end, { desc = 'File Explorer (Snacks)' })
+  local root = require('snacks').git.get_root() or vim.fn.getcwd()
+
+  require('nvim-tree.api').tree.toggle { path = root, find_file = true }
+end, { desc = 'Explorer (Floating Root)' })
 
 -- Lazygit: La mejor terminal para Git
 map('n', '<leader>gg', function()
@@ -52,12 +55,12 @@ map('n', '<leader>gs', function()
   require('snacks').picker.git_status()
 end, { desc = 'Git Status' })
 
--- Navegar entre buffers (pestañas)
-map('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
-map('n', '<S-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next Buffer' })
+-- Navegar entre pestañas (Barbar)
+map('n', '<S-h>', '<cmd>BufferPrevious<cr>', { desc = 'Prev Buffer' })
+map('n', '<S-l>', '<cmd>BufferNext<cr>', { desc = 'Next Buffer' })
 
--- Cerrar buffer actual
-map('n', '<leader>bd', '<cmd>bd<cr>', { desc = '[B]uffer [D]elete' })
+-- Cerrar buffer
+map('n', '<leader>bd', '<cmd>BufferClose<cr>', { desc = 'Delete Buffer' })
 
 -- Terminal Flotante
 map({ 'n', 't' }, '<leader>ft', function()
