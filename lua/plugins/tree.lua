@@ -1,7 +1,7 @@
 return {
   'nvim-tree/nvim-tree.lua',
   version = '*',
-  lazy = false,
+  cmd = { 'NvimTreeToggle', 'NvimTreeFocus' },
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
@@ -20,6 +20,10 @@ return {
       vim.keymap.set('n', 'h', api.node.navigate.parent_close, map_opts 'Close Directory')
 
       vim.keymap.set('n', '<CR>', api.node.open.edit, map_opts 'Open')
+
+      vim.keymap.set('n', '<Esc>', api.tree.close, map_opts 'Close')
+
+      vim.keymap.set('n', '<leader>e', api.tree.close, map_opts 'Close')
     end,
     view = {
       float = {
@@ -43,6 +47,22 @@ return {
           }
         end,
       },
+    },
+    sync_root_with_cwd = true,
+    respect_buf_cwd = false,
+    update_focused_file = {
+      enable = true,
+      update_root = false,
+    },
+    renderer = {
+      root_folder_label = ':t',
+      indent_markers = {
+        enable = true,
+      },
+    },
+    prefer_startup_root = true,
+    filters = {
+      dotfiles = true,
     },
   },
 }

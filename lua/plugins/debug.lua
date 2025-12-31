@@ -1,7 +1,5 @@
 return {
   'mfussenegger/nvim-dap',
-  -- 1. Definimos las teclas aquí AFUERA de config.
-  -- Esto le dice a Lazy: "No cargues este plugin hasta que presione una de estas teclas".
   keys = {
     {
       '<leader>db',

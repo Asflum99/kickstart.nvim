@@ -1,28 +1,36 @@
 return {
   'folke/tokyonight.nvim',
-  priority = 1000,
   lazy = false,
-  config = function()
-    ---@diagnostic disable-next-line: missing-fields
-    require('tokyonight').setup {
-      styles = { comments = { italic = false } },
-      on_highlights = function(hl, _)
-        -- Fondo de la barra
-        hl.BufferLineFill = { bg = '#1a1b26' }
+  priority = 1000,
+  opts = {
+    style = 'night',
+    styles = {
+      comments = { italic = false },
+      variables = { italic = false },
+    },
+    on_highlights = function(hl, c)
+      --- @--- Configuración de BufferLine ---
+      hl.BufferLineFill = { bg = c.bg_dark }
+      -- Pestaña seleccionada (Azul)
+      hl.BufferLineBufferSelected = { fg = c.blue, bg = c.bg_highlight, bold = true }
+      -- Forzar Naranja cuando está modificado (usando la paleta 'c')
+      hl.BufferLineModified = { fg = c.orange, bg = c.bg_dark }
+      hl.BufferLineModifiedVisible = { fg = c.orange, bg = c.bg_dark }
+      hl.BufferLineModifiedSelected = { fg = c.orange, bg = c.bg_highlight, bold = true }
+      -- Indicador invisible
+      hl.BufferLineIndicatorSelected = { fg = c.bg_highlight, bg = c.bg_highlight }
 
-        -- Pestaña seleccionada (Normal) -> Azul
-        hl.BufferLineBufferSelected = { fg = '#7aa2f7', bg = '#292e42', bold = true }
+      local universal_links = {
+        ['@lsp.type.selfParameter'] = '@variable.builtin',
+      }
 
-        -- FORZAR NARANJA CUANDO ESTÁ MODIFICADO (Seleccionado o no)
-        -- Usamos el naranja de Tokyo Night: c.orange o "#e0af68"
-        hl.BufferLineModified = { fg = '#e0af68', bg = '#1a1b26' }
-        hl.BufferLineModifiedVisible = { fg = '#e0af68', bg = '#1a1b26' }
-        hl.BufferLineModifiedSelected = { fg = '#e0af68', bg = '#292e42', bold = true }
-
-        -- Eliminar cualquier indicador que pueda "pisar" el color
-        hl.BufferLineIndicatorSelected = { fg = '#292e42', bg = '#292e42' }
-      end,
-    }
+      for lsp_label, theme_group in pairs(universal_links) do
+        hl[lsp_label] = { link = theme_group }
+      end
+    end,
+  },
+  config = function(_, opts)
+    require('tokyonight').setup(opts)
     vim.cmd.colorscheme 'tokyonight-night'
   end,
 }

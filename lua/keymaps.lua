@@ -1,5 +1,29 @@
 local map = vim.keymap.set
 
+local function open_nvim_tree_in_root()
+  local api = require 'nvim-tree.api'
+  local snacks = require 'snacks'
+
+  -- 1. Buscar la raíz (.git o carpeta lua)
+  local root = snacks.git.get_root()
+  if not root or root == '' then
+    root = vim.fs.find({ '.git', 'lua', 'init.lua' }, { upward = true, path = vim.fn.expand '%:p:h' })[1]
+    if root then
+      root = vim.fn.fnamemodify(root, ':h')
+    end
+  end
+
+  -- 2. Si sigue sin encontrar nada, usa la carpeta del archivo
+  root = root or vim.fn.expand '%:p:h'
+
+  -- 3. CAMBIO CLAVE: Cambiamos el directorio de Neovim
+  -- Esto es lo que elimina el "ruido" de las carpetas superiores
+  vim.fn.chdir(root)
+
+  -- 4. Abrir nvim-tree
+  api.tree.open { path = root, find_file = true, update_root = true }
+end
+
 -- [[ Basic Keymaps ]]
 --  See `:help hlsearch`
 map('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -28,17 +52,14 @@ map('n', '<leader>ff', function()
 end, { desc = '[F]ind [F]iles' })
 
 -- Abrir el explorador en el directorio del archivo actual
--- En lua/keymaps.lua
-map('n', '<leader>e', function()
-  local root = require('snacks').git.get_root() or vim.fn.getcwd()
+map('n', '<leader>e', open_nvim_tree_in_root, { desc = 'Explorer (Project Root)' })
 
-  require('nvim-tree.api').tree.toggle { path = root, find_file = true }
-end, { desc = 'Explorer (Floating Root)' })
-
--- Lazygit: La mejor terminal para Git
+-- Lazygit
 map('n', '<leader>gg', function()
-  require('snacks').lazygit()
-end, { desc = 'Lazygit' })
+  local git_root = require('snacks').git.get_root()
+
+  require('snacks').lazygit.open { cwd = git_root }
+end, { desc = 'Lazygit (Root Dir)' })
 
 -- Ver el historial de cambios del archivo actual
 map('n', '<leader>gf', function()
